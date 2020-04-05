@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-// import { TasksModule } from './api/tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfig } from './config/typeorm.config';
 import { ApiModule } from './api/api.module';
