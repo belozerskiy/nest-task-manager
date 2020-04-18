@@ -4,6 +4,7 @@ import { GetTasksFilterDto } from '../../api/tasks/dto/get-tasks-filter.dto';
 import { UpdateTaskArgsDto } from './args/update-task.args.dto';
 import { CreateTaskArgsDto } from './args/create-task-args.dto';
 import { TaskEntity } from 'src/models/entities/task.entity';
+import { DeleteTaskAgrsDto } from './args/delete-task-args.dto';
 
 @Resolver(() => TaskEntity)
 export class TasksResolver {
@@ -13,10 +14,10 @@ export class TasksResolver {
   async getTasks(
     @Args() tasksFilter: GetTasksFilterDto,
   ): Promise<TaskEntity[]> {
-    if (Object.keys(tasksFilter).length) {
-      return this.tasksService.getFilteredTasks(tasksFilter);
-    }
-    return this.tasksService.getAllTasks();
+    // if (Object.keys(tasksFilter).length) {
+    return this.tasksService.getFilteredTasks(tasksFilter);
+    // }
+    // return this.tasksService.getAllTasks();
   }
 
   @Query(() => TaskEntity)
@@ -35,5 +36,10 @@ export class TasksResolver {
   @Mutation(() => TaskEntity)
   createTask(@Args() createTaskDto: CreateTaskArgsDto): Promise<TaskEntity> {
     return this.tasksService.createTask(createTaskDto);
+  }
+
+  @Mutation(() => TaskEntity)
+  deleteTask(@Args() deleteTaskDtro: DeleteTaskAgrsDto): Promise<TaskEntity> {
+    return this.tasksService.deleteTaskById(deleteTaskDtro.id);
   }
 }

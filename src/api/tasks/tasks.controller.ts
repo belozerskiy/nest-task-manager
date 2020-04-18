@@ -21,6 +21,7 @@ import { TaskEntity } from 'src/models/entities/task.entity';
 import { TaskStatus } from 'src/models/entities/task-status.enum';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
+import { DeleteResult } from 'typeorm';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -54,7 +55,7 @@ export class TasksController {
   deleteTaskById(
     @Param('id', ParseIntPipe)
     id: number,
-  ): Promise<void> {
+  ): Promise<TaskEntity> {
     return this.tasksService.deleteTaskById(id);
   }
 

@@ -6,6 +6,7 @@ import { TaskEntity } from '../../models/entities/task.entity';
 import { DeleteResult } from 'typeorm';
 import { TaskStatus } from '../../models/entities/task-status.enum';
 import { TaskRepository } from '../../models/repositories/task.repository';
+import { orderBy } from 'lodash/fp';
 
 @Injectable()
 export class TasksService {
@@ -17,8 +18,8 @@ export class TasksService {
     return this.taskRepository.findTasksByFilter(tasksFilter);
   }
 
-  getAllTasks(): Promise<TaskEntity[]> {
-    return this.taskRepository.find();
+  async getAllTasks(): Promise<TaskEntity[]> {
+    return this.taskRepository.find({ order: { id: 'DESC' } });
   }
 
   async getTaskById(id: number): Promise<TaskEntity> {
@@ -31,11 +32,12 @@ export class TasksService {
     return this.taskRepository.createTask(createTaskDto);
   }
 
-  async deleteTaskById(id: number): Promise<void> {
-    const result: DeleteResult = await this.taskRepository.delete(id);
+  async deleteTaskById(id: number): Promise<TaskEntity> {
+    const result: DeleteResult = await this.taskRepository.deleteById(id);
     if (!result.affected) {
       throw new NotFoundException(`Task with ID "${id}" not found`);
     }
+    return result.raw[0] as TaskEntity;
   }
 
   async updateTaskStatus(id: number, status: TaskStatus): Promise<TaskEntity> {

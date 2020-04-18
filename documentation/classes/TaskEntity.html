@@ -327,7 +327,7 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from &#x27;typeorm&#x27;;
 import { TaskStatus } from &#x27;./task-status.enum&#x27;;
-import { ObjectType, Field, ID, registerEnumType } from &#x27;@nestjs/graphql&#x27;;
+import { ObjectType, Field, registerEnumType } from &#x27;@nestjs/graphql&#x27;;
 
 registerEnumType(TaskStatus, {
   name: &#x27;TaskStatus&#x27;,

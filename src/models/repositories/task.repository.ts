@@ -1,4 +1,4 @@
-import { Repository, EntityRepository } from 'typeorm';
+import { Repository, EntityRepository, DeleteResult } from 'typeorm';
 import { TaskEntity } from '../entities/task.entity';
 import { CreateTaskDto } from '../../api/tasks/dto/create-task.dto';
 import { GetTasksFilterDto } from '../../api/tasks/dto/get-tasks-filter.dto';
@@ -15,7 +15,7 @@ export class TaskRepository extends Repository<TaskEntity> {
   async findTasksByFilter(
     tasksFilter: GetTasksFilterDto,
   ): Promise<TaskEntity[]> {
-    const { status, search } = tasksFilter;
+    const { status, search, skip, limit } = tasksFilter;
 
     let tasks: TaskEntity[] = [];
     const query = this.createQueryBuilder();
@@ -31,7 +31,22 @@ export class TaskRepository extends Repository<TaskEntity> {
       );
     }
 
+    query
+      .orderBy('id', 'DESC')
+      .skip(skip)
+      .take(limit);
+
     tasks = await query.getMany();
     return tasks;
+  }
+
+  async deleteById(id: number): Promise<DeleteResult> {
+    const result = await this.createQueryBuilder()
+      .delete()
+      .whereInIds(id)
+      .returning('*')
+      .execute();
+
+    return result;
   }
 }

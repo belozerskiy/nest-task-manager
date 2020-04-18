@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-import { Field, ArgsType } from '@nestjs/graphql';
+import { Field, ArgsType, ID } from '@nestjs/graphql';
 
 @ArgsType()
 export class CreateTaskArgsDto {
